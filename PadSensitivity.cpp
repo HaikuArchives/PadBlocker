@@ -20,7 +20,7 @@
  
  Note:
  makes a settings file in home/config/settings, 
- touchpad_sensitivity_filter_prefs.txt Just a text file,
+ padsensitivity_config . Just a text file,
  containing the sensitivity threshold in thousandths of
  a second. This number represents the delay between the last
  B_KEY_UP message and when the filter will allow
@@ -72,6 +72,7 @@ class PadSensitivity : public BInputServerFilter
 		bigtime_t _threshold;
 };
 
+
 PadSensitivity::PadSensitivity()
 {
 	_lastKeyUp = 0;
@@ -86,7 +87,7 @@ PadSensitivity::PadSensitivity()
 	BPath settingsPath;
 	if (find_directory(B_USER_SETTINGS_DIRECTORY, &settingsPath) == B_OK)
 	{
-		settingsPath.Append("touchpad_sensitivity_filter_prefs.txt");
+		settingsPath.Append("padsensitivity_config");
 		BEntry settingsEntry(settingsPath.Path());
 		
 		//does the settings file exist?
@@ -103,7 +104,7 @@ PadSensitivity::PadSensitivity()
 			{
 				//write in default settings
 				char buf[64];
-				sprintf(buf, "%ld #delay in thousandths", (int32)_threshold);
+				sprintf(buf, "%ld #delay in 1/1000 secs", (int32)_threshold);
 				defaultSettingsFile.WriteAt(0, (void *)buf, strlen(buf));
 				defaultSettingsFile.Unset();
 			}
@@ -134,7 +135,11 @@ PadSensitivity::PadSensitivity()
 	#endif
 }
 
-PadSensitivity::~PadSensitivity(){}
+
+PadSensitivity::~PadSensitivity()
+{
+}
+
 
 filter_result PadSensitivity::Filter(BMessage *message, BList *outList)
 {
