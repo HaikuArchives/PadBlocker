@@ -5,7 +5,7 @@
 ## architecture of Haiku.
 
 # The name of the binary.
-NAME = PadSensitivity
+NAME = PadSensitivity.so
 
 # The type of binary, must be one of:
 #	APP:	Application
