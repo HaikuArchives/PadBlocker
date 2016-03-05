@@ -20,7 +20,7 @@
  
  Note:
  makes a settings file in home/config/settings, 
- padsensitivity_config . Just a text file,
+ padsensitivity_settings . Just a text file,
  containing the sensitivity threshold in thousandths of
  a second. This number represents the delay between the last
  B_KEY_UP message and when the filter will allow
@@ -87,7 +87,7 @@ PadSensitivity::PadSensitivity()
 	BPath settingsPath;
 	if (find_directory(B_USER_SETTINGS_DIRECTORY, &settingsPath) == B_OK)
 	{
-		settingsPath.Append("padsensitivity_config");
+		settingsPath.Append("padsensitivity_settings");
 		BEntry settingsEntry(settingsPath.Path());
 		
 		//does the settings file exist?
