@@ -60,11 +60,11 @@
 
 extern "C" _EXPORT BInputServerFilter* instantiate_input_filter();
 
-class TouchpadSensitivityFilter : public BInputServerFilter 
+class PadSensitivity : public BInputServerFilter 
 {
 	public:
-		TouchpadSensitivityFilter();
-		virtual ~TouchpadSensitivityFilter();
+		PadSensitivity();
+		virtual ~PadSensitivity();
 		virtual	filter_result Filter(BMessage *message, BList *outList);
 
 	private:
@@ -72,13 +72,13 @@ class TouchpadSensitivityFilter : public BInputServerFilter
 		bigtime_t _threshold;
 };
 
-TouchpadSensitivityFilter::TouchpadSensitivityFilter()
+PadSensitivity::PadSensitivity()
 {
 	_lastKeyUp = 0;
 	_threshold = 300; //~one third of a second?
 
 	#if Z_DEBUG
-	BeDC dc("TouchpadSensitivityFilter");
+	BeDC dc("PadSensitivity");
 	#endif
 
 	//load settings file
@@ -134,9 +134,9 @@ TouchpadSensitivityFilter::TouchpadSensitivityFilter()
 	#endif
 }
 
-TouchpadSensitivityFilter::~TouchpadSensitivityFilter(){}
+PadSensitivity::~PadSensitivity(){}
 
-filter_result TouchpadSensitivityFilter::Filter(BMessage *message, BList *outList)
+filter_result PadSensitivity::Filter(BMessage *message, BList *outList)
 {
 	filter_result res = B_DISPATCH_MESSAGE;
 	
@@ -167,7 +167,7 @@ filter_result TouchpadSensitivityFilter::Filter(BMessage *message, BList *outLis
 	#if Z_DEBUG	
 	if (res == B_SKIP_MESSAGE)
 	{
-		BeDC dc("TouchpadSensitivityFilter");
+		BeDC dc("PadSensitivity");
 		dc.SendMessage("Skipping mouse down event");
 	}
 	#endif
@@ -181,5 +181,5 @@ filter_result TouchpadSensitivityFilter::Filter(BMessage *message, BList *outLis
 
 BInputServerFilter* instantiate_input_filter()
 {
-	return (new TouchpadSensitivityFilter());
+	return (new PadSensitivity());
 }
