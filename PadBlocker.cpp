@@ -20,7 +20,7 @@
  
  Note:
  makes a settings file in home/config/settings, 
- padsensitivity_settings . Just a text file,
+ PadBlocker_settings . Just a text file,
  containing the sensitivity threshold in thousandths of
  a second. This number represents the delay between the last
  B_KEY_UP message and when the filter will allow
@@ -60,11 +60,11 @@
 
 extern "C" _EXPORT BInputServerFilter* instantiate_input_filter();
 
-class PadSensitivity : public BInputServerFilter 
+class PadBlocker : public BInputServerFilter 
 {
 	public:
-		PadSensitivity();
-		virtual ~PadSensitivity();
+		PadBlocker();
+		virtual ~PadBlocker();
 		virtual	filter_result Filter(BMessage *message, BList *outList);
 
 	private:
@@ -73,13 +73,13 @@ class PadSensitivity : public BInputServerFilter
 };
 
 
-PadSensitivity::PadSensitivity()
+PadBlocker::PadBlocker()
 {
 	_lastKeyUp = 0;
 	_threshold = 300; //~one third of a second?
 
 	#if Z_DEBUG
-	BeDC dc("PadSensitivity");
+	BeDC dc("PadBlocker");
 	#endif
 
 	//load settings file
@@ -87,7 +87,7 @@ PadSensitivity::PadSensitivity()
 	BPath settingsPath;
 	if (find_directory(B_USER_SETTINGS_DIRECTORY, &settingsPath) == B_OK)
 	{
-		settingsPath.Append("padsensitivity_settings");
+		settingsPath.Append("PadBlocker_settings");
 		BEntry settingsEntry(settingsPath.Path());
 		
 		//does the settings file exist?
@@ -136,12 +136,12 @@ PadSensitivity::PadSensitivity()
 }
 
 
-PadSensitivity::~PadSensitivity()
+PadBlocker::~PadBlocker()
 {
 }
 
 
-filter_result PadSensitivity::Filter(BMessage *message, BList *outList)
+filter_result PadBlocker::Filter(BMessage *message, BList *outList)
 {
 	filter_result res = B_DISPATCH_MESSAGE;
 	
@@ -172,7 +172,7 @@ filter_result PadSensitivity::Filter(BMessage *message, BList *outList)
 	#if Z_DEBUG	
 	if (res == B_SKIP_MESSAGE)
 	{
-		BeDC dc("PadSensitivity");
+		BeDC dc("PadBlocker");
 		dc.SendMessage("Skipping mouse down event");
 	}
 	#endif
@@ -186,5 +186,5 @@ filter_result PadSensitivity::Filter(BMessage *message, BList *outList)
 
 BInputServerFilter* instantiate_input_filter()
 {
-	return (new PadSensitivity());
+	return (new PadBlocker());
 }
